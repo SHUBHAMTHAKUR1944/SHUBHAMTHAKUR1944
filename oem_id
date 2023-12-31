@@ -1,0 +1,28 @@
+import pandas as pd
+df = pd.read_csv("device_features (3).csv")
+def display_info_by_oem_id(df, oem_id):
+    # Group by 'oem_id' and select the specific features for each group
+    result = df[df['oem_id'] == oem_id].groupby('oem_id').agg({
+        'model': 'first',
+        'weight_gram': 'first',
+        'manufacturer': 'first',
+        'price': 'first',
+        'price_currency': 'first'
+    }).reset_index()
+
+    return result
+
+while True:
+    # Get user input for the oem_id
+    oem_id_input = input("Enter oem_id (or enter 'exit' to exit): ")
+
+    if oem_id_input.lower() == 'exit':
+        break  # Exit the loop if 'exit' is entered
+
+    # Call the function to search for the given oem_id
+    result = display_info_by_oem_id(df, oem_id_input)
+
+    if not result.empty:
+        print(result)
+    else:
+        print(f"No information found for oem_id {oem_id_input}.")
