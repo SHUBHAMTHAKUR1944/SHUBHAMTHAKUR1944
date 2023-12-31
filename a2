@@ -1,0 +1,28 @@
+import pandas as pd
+df = pd.read_csv("device_features (3).csv")
+def display_info_by_codename(df, codename):
+    # Group by 'codename' and select the specific features for each group
+    result = df[df['codename'] == codename].groupby('codename').agg({
+        'brand': 'first',
+        'model': 'first',
+        'ram_capacity': 'first',
+        'info_added_date': 'first',
+        'market_regions': 'first'
+    }).reset_index()
+
+    return result
+
+while True:
+    # Get user input for the codename
+    codename_input = input("Enter codename (or enter 'exit' to exit): ")
+
+    if codename_input.lower() == 'exit':
+        break  # Exit the loop if 'exit' is entered
+
+    # Call the function to search for the given codename
+    result = display_info_by_codename(df, codename_input)
+
+    if not result.empty:
+        print(result)
+    else:
+        print(f"No information found for codename {codename_input}.")
